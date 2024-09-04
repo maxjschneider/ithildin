@@ -12,7 +12,7 @@ export default defineConfig({
       disabled: false,
       config: true,
     },
-
+    
     manifest: {
       name: 'Ithildin',
       short_name: 'Ithildin',
