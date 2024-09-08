@@ -2,6 +2,10 @@
 
 const fastify = require("fastify")();
 
+fastify.register(require('@fastify/jwt'), {
+  secret: process.env.JWT_SECRET
+})
+
 fastify.get("/", async (request, reply) => {
   return { message: "Hello world!" };
 });
