@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "start": "node --env-file=.env server.js"
+    "dev": "node --env-file=.env server.js"
   },
   "dependencies": {
     "@fastify/jwt": "^8.0.1",
