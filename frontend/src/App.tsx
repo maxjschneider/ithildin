@@ -1,11 +1,26 @@
-import { useState } from 'react'
-import reactLogo from './assets/favicon-32x32.png'
-import appLogo from '/favicon.ico'
-import PWABadge from './PWABadge.tsx'
-import './App.css'
+import { useState } from "react";
+import reactLogo from "./assets/favicon-32x32.png";
+import appLogo from "/favicon.ico";
+import PWABadge from "./PWABadge.tsx";
+import "./App.css";
+
+async function testFunc() {
+  const response = await fetch(import.meta.env.VITE_SERVER + "/cookies", {
+    method: "GET",
+    headers: {
+      Authorization: "Basic abcd:xyzd",
+    },
+    credentials: "include",
+  });
+
+  const msg = await response.json();
+  console.log(msg);
+}
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [count, setCount] = useState(0);
+
+  testFunc();
 
   return (
     <>
@@ -31,7 +46,7 @@ function App() {
       </p>
       <PWABadge />
     </>
-  )
+  );
 }
 
-export default App
+export default App;
