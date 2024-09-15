@@ -32,7 +32,7 @@ builder.Services.Configure<IdentityOptions>(options => {
     options.Password.RequireLowercase = true;
     options.Password.RequireNonAlphanumeric = true;
     options.Password.RequireUppercase = true;
-    options.Password.RequiredLength = 6;
+    options.Password.RequiredLength = 14;
     options.Password.RequiredUniqueChars = 1;
 
     // Lockout settings.
@@ -68,8 +68,6 @@ if (app.Environment.IsDevelopment())
 }
 
 app.MapIdentityApi<IdentityUser>();
-
-app.MapGet("/", () => "Hello World!");
 
 app.MapGet("/test", () => "Hello World!")
     .RequireAuthorization();
