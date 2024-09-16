@@ -3,7 +3,7 @@ import "@mantine/core/styles.css";
 
 import { MantineProvider } from "@mantine/core";
 
-import { AuthenticationForm } from "./Components/AuthenticationForm.tsx";
+import { AuthenticationForm } from "./components/AuthenticationForm.tsx";
 
 function App() {
   return (
