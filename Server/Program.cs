@@ -1,8 +1,22 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 var builder = WebApplication.CreateBuilder(args);
+
+var AllowedOrigins = "_AllowedOrigins";
+
+// CORS setup 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: AllowedOrigins,
+        policy  =>
+        {
+            policy.WithOrigins("http://localhost:8081").AllowCredentials().AllowAnyMethod().AllowAnyHeader().Build();
+        }
+    );
+});
 
 // Swagger setup 
 builder.Services.AddControllers();
@@ -22,8 +36,8 @@ builder.Services.AddIdentityApiEndpoints<IdentityUser>()
 builder.Services.AddTransient<IEmailSender, EmailSender>();
 
 builder.Services.Configure<CookiePolicyOptions>(options => {
-    options.CheckConsentNeeded = context => true;
-    options.MinimumSameSitePolicy = SameSiteMode.Strict;
+    // options.CheckConsentNeeded = context => true;
+    options.MinimumSameSitePolicy = SameSiteMode.None;
 });
 
 builder.Services.Configure<IdentityOptions>(options => {
@@ -49,7 +63,9 @@ builder.Services.Configure<IdentityOptions>(options => {
 builder.Services.ConfigureApplicationCookie(options => {
     options.Cookie.HttpOnly = true;
     options.ExpireTimeSpan = TimeSpan.FromDays(14);
-
+    options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+    options.Cookie.SameSite = SameSiteMode.None;
+    //options.Cookie.Domain = "http://localhost:8081";
     options.LoginPath = "/Identity/Account/Login";
     options.AccessDeniedPath = "/Identity/Account/AccessDenied";
     options.SlidingExpiration = true;
@@ -58,8 +74,10 @@ builder.Services.ConfigureApplicationCookie(options => {
 // App start
 var app = builder.Build();
 
+app.UseCors(AllowedOrigins);
 app.UseCookiePolicy();
 app.UseAuthentication();
+app.UseAuthorization();
 
 if (app.Environment.IsDevelopment())
 {

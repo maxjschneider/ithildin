@@ -17,6 +17,7 @@ import {
   ThemeIcon,
   rem,
 } from "@mantine/core";
+import { login, register } from "../api/Authorization.tsx";
 
 const processPassword = (password, confirmPassword) => {
   const empty = password === "";
@@ -54,6 +55,7 @@ const processPassword = (password, confirmPassword) => {
 export function AuthenticationForm(props: PaperProps) {
   const [type, toggle] = useToggle(["login", "register"]);
   const [passwordState, setPasswordState] = useState(processPassword(""));
+  const [status, setStatus] = useState({ message: "", color: "green" });
 
   const onPassswordChange = (password, confirmPassword) => {
     setPasswordState(processPassword(password, confirmPassword));
@@ -71,6 +73,11 @@ export function AuthenticationForm(props: PaperProps) {
     },
   });
 
+  fetch(import.meta.env.VITE_BACKEND_URL + "/test", {
+    method: "GET",
+    credentials: "include",
+  }).then((x) => console.log(x));
+
   return (
     <Paper radius="md" p="xl" withBorder {...props}>
       <Text size="lg" fw={500}>
@@ -81,7 +88,34 @@ export function AuthenticationForm(props: PaperProps) {
 
       <form
         onSubmit={form.onSubmit((values) => {
-          console.log(values);
+          if (type === "login") {
+            login(values["email"], values["password"]).then((result) => {
+              if (result.status == 200) {
+                return;
+              } else {
+                setStatus({ color: "red", message: result.detail });
+              }
+            });
+          } else {
+            for (const s of passwordState) {
+              if (!s["valid"]) {
+                return;
+              }
+            }
+
+            register(values["email"], values["password"]).then((result) => {
+              if (result.status == 200) {
+                toggle();
+              } else {
+                let message = "";
+
+                for (const e in result.errors)
+                  message += result.errors[e][0] + "\n";
+
+                setStatus({ color: "red", message: message });
+              }
+            });
+          }
         })}
       >
         <Stack ta="left">
@@ -93,6 +127,7 @@ export function AuthenticationForm(props: PaperProps) {
             onChange={(event) =>
               form.setFieldValue("email", event.currentTarget.value)
             }
+            error={form.errors.email && "Invalid email"}
             radius="md"
           />
 
@@ -113,7 +148,7 @@ export function AuthenticationForm(props: PaperProps) {
 
           {type === "register" && (
             <>
-              <TextInput
+              <PasswordInput
                 required
                 label="Repeat Password"
                 placeholder="Confirm your password"
@@ -162,6 +197,8 @@ export function AuthenticationForm(props: PaperProps) {
               </List>
             </>
           )}
+
+          <p style={{ margin: 0, color: status.color }}>{status.message}</p>
         </Stack>
 
         <Group justify="space-between" mt="xl">
@@ -176,7 +213,7 @@ export function AuthenticationForm(props: PaperProps) {
               ? "Already have an account? Login"
               : "Don't have an account? Register"}
           </Anchor>
-          <Button type="submit" radius="xl">
+          <Button type="submit" radius="xl" error={status}>
             {upperFirst(type)}
           </Button>
         </Group>
