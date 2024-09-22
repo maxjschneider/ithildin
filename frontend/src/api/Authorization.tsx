@@ -17,6 +17,16 @@ const login = async (email, password) => {
 
     const result = await response.json();
 
+    if (result.detail === "NotAllowed") {
+      await sendEmailConfirmation(email);
+
+      return {
+        status: 401,
+        detail:
+          "Please confirm your email. You have been sent a confirmation link.",
+      };
+    }
+
     return result;
   } catch (error) {
     console.error(error.message);
@@ -53,6 +63,25 @@ const register = async (email, password) => {
     console.error(error.message);
 
     return error.message;
+  }
+};
+
+const isLoggedIn = async () => {};
+
+const sendEmailConfirmation = async (email) => {
+  try {
+    await fetch(import.meta.env.VITE_BACKEND_URL + "/resendConfirmationEmail", {
+      method: "POST",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email: email,
+      }),
+    });
+  } catch (error) {
+    console.error(error.message);
   }
 };
 

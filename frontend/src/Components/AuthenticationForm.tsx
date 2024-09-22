@@ -73,11 +73,6 @@ export function AuthenticationForm(props: PaperProps) {
     },
   });
 
-  fetch(import.meta.env.VITE_BACKEND_URL + "/test", {
-    method: "GET",
-    credentials: "include",
-  }).then((x) => console.log(x));
-
   return (
     <Paper radius="md" p="xl" withBorder {...props}>
       <Text size="lg" fw={500}>
@@ -198,7 +193,16 @@ export function AuthenticationForm(props: PaperProps) {
             </>
           )}
 
-          <p style={{ margin: 0, color: status.color }}>{status.message}</p>
+          <p
+            style={{
+              minWidth: "100%",
+              width: 0,
+              margin: 0,
+              color: status.color,
+            }}
+          >
+            {status.message}
+          </p>
         </Stack>
 
         <Group justify="space-between" mt="xl">
