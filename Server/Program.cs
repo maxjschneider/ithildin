@@ -1,7 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
-using Microsoft.AspNetCore.Authentication.Cookies;
+using System.Drawing;
+using Microsoft.AspNetCore.Mvc;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -89,7 +90,13 @@ if (app.Environment.IsDevelopment())
 
 app.MapIdentityApi<IdentityUser>();
 
-app.MapPost("/users/me", () => "Hello World!")
-    .RequireAuthorization();
+app.MapPost("/users/me", (HttpContext ctx) => {
+    if (ctx.User.Identity == null) {
+        ctx.Response.StatusCode = 401;
+        return "";
+    } else {
+        return ctx.User.Identity.Name;
+    }
+}).RequireAuthorization();
 
 app.Run();

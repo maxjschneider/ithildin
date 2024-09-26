@@ -17,7 +17,7 @@ import {
   ThemeIcon,
   rem,
 } from "@mantine/core";
-import { login, register } from "../api/Authorization.tsx";
+import { login, register, isLoggedIn } from "../api/Authorization.tsx";
 
 const processPassword = (password, confirmPassword) => {
   const empty = password === "";
@@ -72,6 +72,8 @@ export function AuthenticationForm(props: PaperProps) {
       email: (val) => (/^\S+@\S+$/.test(val) ? null : "Invalid email"),
     },
   });
+
+  isLoggedIn();
 
   return (
     <Paper radius="md" p="xl" withBorder {...props}>

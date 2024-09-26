@@ -66,7 +66,24 @@ const register = async (email, password) => {
   }
 };
 
-const isLoggedIn = async () => {};
+const isLoggedIn = async () => {
+  try {
+    const response = await fetch(
+      import.meta.env.VITE_BACKEND_URL + "/users/me",
+      {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    console.log(await response.text());
+  } catch (error) {
+    console.error(error.message);
+  }
+};
 
 const sendEmailConfirmation = async (email) => {
   try {
@@ -85,4 +102,4 @@ const sendEmailConfirmation = async (email) => {
   }
 };
 
-export { login, register };
+export { login, register, isLoggedIn };
