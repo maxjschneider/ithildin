@@ -20,7 +20,7 @@ import {
 } from "@mantine/core";
 import { MantineProvider } from "@mantine/core";
 import "@mantine/core/styles.css";
-import { login, register, isLoggedIn } from "../api/Authorization.tsx";
+import { login, register } from "../api/Authorization.tsx";
 
 const processPassword = (password, confirmPassword) => {
   const empty = password === "";
@@ -55,7 +55,7 @@ const processPassword = (password, confirmPassword) => {
   return statuses;
 };
 
-export function AuthenticationForm(props: PaperProps) {
+const AuthenticationForm = (props: PaperProps) => {
   const [type, toggle] = useToggle(["login", "register"]);
   const [passwordState, setPasswordState] = useState(processPassword(""));
   const [status, setStatus] = useState({ message: "", color: "green" });
@@ -233,4 +233,6 @@ export function AuthenticationForm(props: PaperProps) {
       </Container>
     </MantineProvider>
   );
-}
+};
+
+export default AuthenticationForm;
