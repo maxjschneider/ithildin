@@ -79,9 +79,12 @@ const isLoggedIn = async () => {
       }
     );
 
-    console.log(await response.text());
+    console.log(response);
+
+    if (response.status == 200) return true;
+    else return false;
   } catch (error) {
-    console.error(error.message);
+    return false;
   }
 };
 
