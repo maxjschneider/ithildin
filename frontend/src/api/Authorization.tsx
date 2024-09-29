@@ -15,19 +15,24 @@ const login = async (email, password) => {
       }
     );
 
-    const result = await response.json();
+    if (response.status == 200) {
+      return { status: 200, detail: "Login success" };
+    } else {
+      const result = await response.json();
 
-    if (result.detail === "NotAllowed") {
-      await sendEmailConfirmation(email);
+      // needs email confirmation
+      if (result.detail === "NotAllowed") {
+        await sendEmailConfirmation(email);
 
-      return {
-        status: 401,
-        detail:
-          "Please confirm your email. You have been sent a confirmation link.",
-      };
+        return {
+          status: 401,
+          detail:
+            "Please confirm your email. You have been sent a confirmation link.",
+        };
+      }
+
+      return result;
     }
-
-    return result;
   } catch (error) {
     console.error(error.message);
 
@@ -57,7 +62,6 @@ const register = async (email, password) => {
     }
 
     const result = await response.json();
-    console.log(result);
     return result;
   } catch (error) {
     console.error(error.message);
@@ -78,8 +82,6 @@ const isLoggedIn = async () => {
         },
       }
     );
-
-    console.log(response);
 
     if (response.status == 200) return true;
     else return false;

@@ -93,7 +93,7 @@ app.MapIdentityApi<IdentityUser>();
 app.MapPost("/users/me", (HttpContext ctx) => {
     if (ctx.User.Identity == null) {
         ctx.Response.StatusCode = 401;
-        return "";
+        return "Unauthorized";
     } else {
         return ctx.User.Identity.Name;
     }
