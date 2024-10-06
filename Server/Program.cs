@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using System.Drawing;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -31,7 +32,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(
 
 builder.Services.AddAuthorization();
 
-builder.Services.AddIdentityApiEndpoints<IdentityUser>()
+builder.Services.AddIdentityApiEndpoints<ApplicationUser>()
     .AddEntityFrameworkStores<ApplicationDbContext>();
 
 builder.Services.AddTransient<IEmailSender, EmailSender>();
@@ -80,6 +81,7 @@ var app = builder.Build();
 app.UseCors(AllowedOrigins);
 app.UseCookiePolicy();
 app.UseAuthentication();
+app.UseRouting();
 app.UseAuthorization();
 
 if (app.Environment.IsDevelopment())
@@ -88,15 +90,20 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.MapIdentityApi<IdentityUser>();
+app.MapIdentityApi<ApplicationUser>();
 
-app.MapPost("/users/me", (HttpContext ctx) => {
-    if (ctx.User.Identity == null) {
-        ctx.Response.StatusCode = 401;
-        return "Unauthorized";
-    } else {
-        return ctx.User.Identity.Name;
-    }
-}).RequireAuthorization();
+app.MapControllers();
+
+
+// app.MapPost("/users/me", (HttpContext ctx) => {
+//     if (ctx.User.Identity == null) {
+//         ctx.Response.StatusCode = 401;
+//         return "Unauthorized";
+//     } else {
+//         return ctx.User.Identity.Name;
+//     }
+// }).RequireAuthorization();
+
+
 
 app.Run();
