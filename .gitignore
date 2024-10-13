@@ -4,6 +4,8 @@ EmailSender.cs
 Migrations
 
 # Generic stuff
+*.key
+*.crt
 
 # DB Files
 *.sqlite
