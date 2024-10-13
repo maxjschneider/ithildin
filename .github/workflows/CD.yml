@@ -16,6 +16,7 @@ jobs:
           script: |
             cd ~/dev/ithildin
             git pull
+            cd Server
             docker build . -t ithildin-server
             docker container stop ithildin-server-prod
             docker container prune -f
