@@ -38,10 +38,11 @@ public class UserController : Controller
     public async Task<IActionResult> AddPassword([FromBody] Password password) {
         var user = await GetUser();
 
-        if (user == null) return StatusCode(500);
+        if (user == null || user.PasswordHash == null) return StatusCode(500);
         else {
             password.Id = Guid.NewGuid().ToString();
             password.ApplicationUserId = user.Id;
+            password.PasswordText = Util.EncryptionService.Encrypt(password.PasswordText, user.PasswordHash);
 
             user.Passwords.Add(password);
             _context.SaveChanges();

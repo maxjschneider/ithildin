@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.EntityFrameworkCore;
+using NuGet.Common;
 
 public class ApplicationUser : IdentityUser 
 {
@@ -16,12 +17,18 @@ public class Password
     [JsonIgnore]
     public string? Id {get; set;}
 
-    public string domain {get; set;}
-    public string userName {get; set; }
+    public string Domain {get; set;}
+    public string UserName {get; set; }
     public string PasswordText {get; set;}
 
     [JsonIgnore]
     public string? ApplicationUserId {get; set;}
+
+    public void Encrypt(string password) {
+        Domain = Server.Util.EncryptionService.Encrypt(Domain, password);
+        UserName = Server.Util.EncryptionService.Encrypt(UserName, password);
+        PasswordText = Server.Util.EncryptionService.Encrypt(PasswordText, password);
+    }
 }
 
 
