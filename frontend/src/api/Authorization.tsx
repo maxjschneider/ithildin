@@ -1,4 +1,4 @@
-const login = async (email, password) => {
+const login = async (email: string, password: string) => {
   try {
     const response = await fetch(
       import.meta.env.VITE_BACKEND_URL + "/login?useCookies=true",
@@ -34,13 +34,15 @@ const login = async (email, password) => {
       return result;
     }
   } catch (error) {
-    console.error(error.message);
+    const message: string = (error as Error).message;
 
-    return error.message;
+    console.error(message);
+
+    return message;
   }
 };
 
-const register = async (email, password) => {
+const register = async (email: string, password: string) => {
   try {
     const response = await fetch(
       import.meta.env.VITE_BACKEND_URL + "/register",
@@ -64,16 +66,18 @@ const register = async (email, password) => {
     const result = await response.json();
     return result;
   } catch (error) {
-    console.error(error.message);
+    const message: string = (error as Error).message;
 
-    return error.message;
+    console.error(message);
+
+    return message;
   }
 };
 
 const isLoggedIn = async () => {
   try {
     const response = await fetch(
-      import.meta.env.VITE_BACKEND_URL + "/users/me",
+      import.meta.env.VITE_BACKEND_URL + "/User/me",
       {
         method: "POST",
         credentials: "include",
@@ -90,7 +94,7 @@ const isLoggedIn = async () => {
   }
 };
 
-const sendEmailConfirmation = async (email) => {
+const sendEmailConfirmation = async (email: string) => {
   try {
     await fetch(import.meta.env.VITE_BACKEND_URL + "/resendConfirmationEmail", {
       method: "POST",
@@ -103,7 +107,7 @@ const sendEmailConfirmation = async (email) => {
       }),
     });
   } catch (error) {
-    console.error(error.message);
+    console.error((error as Error).message);
   }
 };
 

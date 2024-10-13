@@ -1,0 +1,12 @@
+services:
+  vite: # name of the first service
+    build: ./frontend # specify the directory of the Dockerfile
+    ports:
+      - "8081:8081" # maps port 2053 on localhost to 2053 in container
+    depends_on:
+      - "aspnet"
+
+  aspnet: # name of the second service
+    build: ./Server
+    ports:
+      - "5130:5130" # maps port 5130 on localhost to 5130 in container

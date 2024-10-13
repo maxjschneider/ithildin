@@ -3,7 +3,7 @@ import { isLoggedIn } from "../api/Authorization.tsx";
 import { useState, useEffect } from "react";
 
 const ProtectedRoutes = () => {
-  const [isAuth, setIsAuth] = useState(null);
+  const [isAuth, setIsAuth] = useState(false);
 
   const location = useLocation();
 

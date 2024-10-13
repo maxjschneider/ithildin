@@ -22,7 +22,7 @@ import { useNavigate } from "react-router-dom";
 import "@mantine/core/styles.css";
 import { login, register, isLoggedIn } from "../api/Authorization.tsx";
 
-const processPassword = (password, confirmPassword) => {
+const processPassword = (password: string, confirmPassword: string) => {
   const empty = password === "";
 
   const statuses = [
@@ -57,7 +57,7 @@ const processPassword = (password, confirmPassword) => {
 
 const AuthenticationForm = (props: PaperProps) => {
   const [type, toggle] = useToggle(["login", "register"]);
-  const [passwordState, setPasswordState] = useState(processPassword(""));
+  const [passwordState, setPasswordState] = useState(processPassword("", ""));
   const [status, setStatus] = useState({ message: "", color: "green" });
 
   const navigate = useNavigate();
@@ -75,7 +75,7 @@ const AuthenticationForm = (props: PaperProps) => {
     checkIfAuthed();
   });
 
-  const onPassswordChange = (password, confirmPassword) => {
+  const onPassswordChange = (password: string, confirmPassword: string) => {
     setPasswordState(processPassword(password, confirmPassword));
   };
 
@@ -119,7 +119,7 @@ const AuthenticationForm = (props: PaperProps) => {
 
               register(values["email"], values["password"]).then((result) => {
                 if (result.status == 200) {
-                  sessionStorage.setItem("needsKey", true);
+                  sessionStorage.setItem("needsKey", "true");
 
                   navigate("/keySetup");
                 } else {
@@ -238,7 +238,7 @@ const AuthenticationForm = (props: PaperProps) => {
                 ? "Already have an account? Login"
                 : "Don't have an account? Register"}
             </Anchor>
-            <Button type="submit" radius="xl" error={status}>
+            <Button type="submit" radius="xl">
               {upperFirst(type)}
             </Button>
           </Group>

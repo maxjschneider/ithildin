@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 
 const KeySetup = () => {
   const [valid, setValid] = useState(false);
-  const [key, setKey] = useState();
+  const [key, setKey] = useState("");
 
   useEffect(() => {
     async function generateAes256Key() {
@@ -26,7 +26,7 @@ const KeySetup = () => {
     }
 
     if (
-      sessionStorage.getItem("needsKey") &&
+      sessionStorage.getItem("needsKey") === "true" &&
       localStorage.getItem("key") == null
     ) {
       generateAes256Key();
