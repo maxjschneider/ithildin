@@ -78,22 +78,22 @@ builder.Services.ConfigureApplicationCookie(options => {
 // App start
 var app = builder.Build();
 
-app.UsePathBase(new PathString("/api"));
+// app.UsePathBase(new PathString("/api"));
 
-app.Use((context, next) =>
-{
-    //The following line adds the siteroot back to the url when being returned to the client, such that https://decumaria:5000/mypage.html becomes https://decumaria:5000:/siteroot/mypage.html
-    context.Request.PathBase = new PathString("/api");
-    //WavaFix: Missing or insecure "X-Content-Type-Options" header
-    context.Response.Headers.Append("X-Content-Type-Options", "nosniff");
-    //WavaFix:
-    context.Response.Headers.Append("Referrer-Policy", "strict-origin-when-cross-origin");
-    //WavaFix: Only allow iframes from the same origin
-    context.Response.Headers.Append("X-Frame-Options", "sameorigin");
-    // New locations for powerpoints, pdfs, etc, need to be added the frame-src and connect-src accordingly.
-    //context.Response.Headers.Add("Content-Security-Policy", "default-src 'self'; script-src 'self'; object-src 'self'; style-src 'self'; img-src 'self'; media-src 'self'; frame-ancestors 'self'; frame-src 'self'; connect-src 'self';");
-    return next();
-});
+// app.Use((context, next) =>
+// {
+//     //The following line adds the siteroot back to the url when being returned to the client, such that https://decumaria:5000/mypage.html becomes https://decumaria:5000:/siteroot/mypage.html
+//     context.Request.PathBase = new PathString("/api");
+//     //WavaFix: Missing or insecure "X-Content-Type-Options" header
+//     context.Response.Headers.Append("X-Content-Type-Options", "nosniff");
+//     //WavaFix:
+//     context.Response.Headers.Append("Referrer-Policy", "strict-origin-when-cross-origin");
+//     //WavaFix: Only allow iframes from the same origin
+//     context.Response.Headers.Append("X-Frame-Options", "sameorigin");
+//     // New locations for powerpoints, pdfs, etc, need to be added the frame-src and connect-src accordingly.
+//     //context.Response.Headers.Add("Content-Security-Policy", "default-src 'self'; script-src 'self'; object-src 'self'; style-src 'self'; img-src 'self'; media-src 'self'; frame-ancestors 'self'; frame-src 'self'; connect-src 'self';");
+//     return next();
+// });
 
 app.UseRouting();
 
