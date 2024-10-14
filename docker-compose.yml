@@ -1,7 +1,7 @@
 services:
   host:
     build: ./host
-    ports: 
+    ports:
       - "2053:2053"
     depends_on:
       - "aspnet"
@@ -10,9 +10,14 @@ services:
   vite: # name of the first service
     build: ./frontend # specify the directory of the Dockerfile
     ports:
-      - "8081:8081" 
+      - "8081:8081"
 
   aspnet: # name of the second service
     build: ./Server
     ports:
       - "8080:8080"
+    volumes:
+      - data_base:/app/
+
+volumes:
+  data_base:
