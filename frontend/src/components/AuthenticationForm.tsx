@@ -66,6 +66,7 @@ const AuthenticationForm = (props: PaperProps) => {
   useEffect(() => {
     const checkIfAuthed = async () => {
       isLoggedIn().then((auth) => {
+        console.log(auth);
         if (auth) {
           navigate("/");
         }

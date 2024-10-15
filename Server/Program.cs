@@ -9,13 +9,15 @@ var builder = WebApplication.CreateBuilder(args);
 
 var AllowedOrigins = "_AllowedOrigins";
 
+string hostName = builder.Configuration.GetValue<string>("HostName") ?? "";
+
 // CORS setup 
 builder.Services.AddCors(options =>
 {
     options.AddPolicy(name: AllowedOrigins,
         policy  =>
         {
-            policy.WithOrigins(builder.Configuration.GetValue<string>("HostName")).AllowCredentials().AllowAnyMethod().AllowAnyHeader().Build();
+            policy.WithOrigins(hostName).AllowCredentials().AllowAnyMethod().AllowAnyHeader().Build();
         }
     );
 });
@@ -28,7 +30,7 @@ builder.Services.AddSwaggerGen();
 
 // Identity setup
 builder.Services.AddDbContext<ApplicationDbContext>(
-    options => options.UseSqlite("Filename=Db.sqlite"));
+    options => options.UseSqlite(@"Filename=data/Db.sqlite"));
 
 builder.Services.AddAuthorization();
 

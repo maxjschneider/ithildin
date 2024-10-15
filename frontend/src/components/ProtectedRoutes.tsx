@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 
 const ProtectedRoutes = () => {
   const [isAuth, setIsAuth] = useState(false);
+  const [loaded, setIsLoaded] = useState(false);
 
   const location = useLocation();
 
@@ -12,12 +13,13 @@ const ProtectedRoutes = () => {
       const auth = await isLoggedIn();
 
       setIsAuth(auth);
+      setIsLoaded(true);
     };
 
     check();
   }, [location.pathname]);
 
-  if (isAuth == null) return null;
+  if (!loaded) return null;
   else return isAuth ? <Outlet /> : <Navigate to="/login" />;
 };
 
